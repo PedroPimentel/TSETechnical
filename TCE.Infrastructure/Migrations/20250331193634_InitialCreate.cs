@@ -19,7 +19,7 @@ namespace TCE.Infrastructure.Migrations
                     Nome = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Telefone = table.Column<string>(type: "TEXT", nullable: true),
-                    DataCadastro = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    DataCadastro = table.Column<DateTime>(type: "DATETIME", nullable: false)
                 },
                 constraints: table =>
                 {

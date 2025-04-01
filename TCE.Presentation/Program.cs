@@ -5,6 +5,7 @@ using TCE.Application.Mappings;
 using TCE.Application.Queries;
 using TCE.Domain.Core.IRepository;
 using TCE.Infrastructure.Data;
+using TCE.Infrastructure.Repositories;
 using TCE.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<TCEDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 //builder.Services.AddMediatR(typeof(Program).Assembly);
