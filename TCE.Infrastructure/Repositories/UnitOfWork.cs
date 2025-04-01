@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TCE.Domain.Core.IRepository;
 using TCE.Infrastructure.Data;
@@ -13,11 +14,13 @@ namespace TCE.Infrastructure.Repositories
         private readonly TCEDbContext _context;
         private readonly Dictionary<Type, object> _repositories;
         private bool _disposed;
+        private readonly IMapper _mapper;
 
-        public UnitOfWork(TCEDbContext context)
+        public UnitOfWork(TCEDbContext context, IMapper mapper)
         {
             _context = context;
             _repositories = new Dictionary<Type, object>();
+            _mapper = mapper;
         }
 
         public IRepository<T> GetRepository<T>() where T : class
@@ -27,7 +30,7 @@ namespace TCE.Infrastructure.Repositories
                 return (IRepository<T>)_repositories[typeof(T)];
             }
 
-            var repository = new Repository<T>(_context);
+            var repository = new Repository<T>(_context, _mapper);
             _repositories.Add(typeof(T), repository);
 
             return repository;
