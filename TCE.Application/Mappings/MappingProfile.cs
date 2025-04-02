@@ -22,6 +22,11 @@ namespace TCE.Application.Mappings
             CreateMap<UpdateCompraCommand, Compra>().ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<CreateCompraCommand, Compra>();
             CreateMap<CreateClienteCommand, Cliente>();
+            CreateMap<Compra, Guid>().ConvertUsing(src => src.Id);
+            CreateMap<Compra, MessageDTO<Guid>>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Id)) 
+            .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(_ => true))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(_ => "Compra realizada com sucesso"));
         }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using TCE.Infrastructure.Data;
-using System.IO;
 
 namespace TCE.Infrastructure
 {

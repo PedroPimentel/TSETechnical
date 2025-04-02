@@ -25,9 +25,12 @@ namespace TCE.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCompraCommand command, CancellationToken cancellationToken)
         {
-            var clienteId = await _mediator.Send(command, cancellationToken);
+            var result = await _mediator.Send(command, cancellationToken);
 
-            return CreatedAtAction(nameof(GetById), new { id = clienteId }, null);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);
         }
 
         [HttpGet("{id}")]
@@ -56,6 +59,18 @@ namespace TCE.Presentation.Controllers
             var response = await _mediator.Send(new DeleteCompraCommand { Id = id });
 
             return Ok(response);
+        }
+
+        [HttpPut("{id}/pagar")]
+        public async Task<IActionResult> Pagar(Guid id, [FromBody] PagarCompraCommand command)
+        {
+            if (id != command.Id) return BadRequest("O id da compra na URL não corresponde ao id no comando.");
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Description);
+
+            return Ok(result);
         }
     }
 }

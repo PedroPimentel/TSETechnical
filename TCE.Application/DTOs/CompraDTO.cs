@@ -9,5 +9,7 @@
         public decimal ValorDevido { get; set; }
         public decimal ValorPago { get; set; }
         public Guid IdempotencyKey { get; set; }
+        public bool Pago { get; set; }
+        public DateTime? DataPagamento { get; private set; }
     }
 }

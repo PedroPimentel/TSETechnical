@@ -1,47 +1,79 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 using TCE.Application.DTOs;
 using TCE.Domain.Core.IRepository;
 using TCE.Domain.Entities;
 
 namespace TCE.Application.Commands.CompraCommands
 {
-    public class CreateCompraCommandHandler : IRequestHandler<CreateCompraCommand, Guid>
+    public class CreateCompraCommandHandler : IRequestHandler<CreateCompraCommand, MessageDTO<Guid>>
     {
-        private readonly IRepository<Compra> _compraRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateCompraCommand> _validator;
 
-        public CreateCompraCommandHandler(IRepository<Compra> compraRepository, IMapper mapper,
-            IUnitOfWork unitOfWork, IValidator<CreateCompraCommand> validator)
+        public CreateCompraCommandHandler(IMapper mapper, IUnitOfWork unitOfWork,
+            IValidator<CreateCompraCommand> validator)
         {
-            _compraRepository = compraRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _validator = validator;
         }
 
-        public async Task<Guid> Handle(CreateCompraCommand request, CancellationToken cancellationToken)
+        public async Task<MessageDTO<Guid>> Handle(CreateCompraCommand request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
-                throw new FluentValidation.ValidationException(validationResult.Errors);
+                return new MessageDTO<Guid>
+                {
+                    IsSuccess = false,
+                    Description = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    Data = Guid.Empty
+                };
 
-            var sameIdempotencyKey = await _compraRepository.GetProjectedAsync<CompraDTO>
-                (c => c.IdempotencyKey == request.IdempotencyKey);
+            var existingCompra = await _unitOfWork.GetRepository<Compra>().GetProjectedAsync<Guid>(
+                c => c.IdempotencyKey == request.IdempotencyKey);
 
-            if (sameIdempotencyKey.Any()) return sameIdempotencyKey.FirstOrDefault().Id;
+            if (existingCompra.Any())
+            {
+                return new MessageDTO<Guid>
+                {
+                    IsSuccess = false,
+                    Description = "Compra já realizada com essa IdempotencyKey",
+                    Data = existingCompra.First()
+                };
+            }
 
-            var compra = _mapper.Map<Compra>(request);
-            
-            await _compraRepository.AddAsync(compra);
-            await _unitOfWork.SaveChangesAsync();
+            var cliente = await _unitOfWork.GetRepository<Cliente>().GetByIdAsync(request.ClienteId);
+            if (cliente is null)
+                return new MessageDTO<Guid>
+                {
+                    IsSuccess = false,
+                    Description = "Cliente não encontrado",
+                    Data = Guid.Empty
+                };
 
-            return compra.Id;
+            try
+            {
+                var compra = _mapper.Map<Compra>(request);
+
+                cliente.AdicionarCompra(compra);
+                await _unitOfWork.GetRepository<Compra>().AddAsync(compra);
+                await _unitOfWork.SaveChangesAsync();
+
+                return _mapper.Map<MessageDTO<Guid>>(compra);
+            }
+            catch (Exception ex) // Captura as exceções do TCE.Domain
+            {
+                return new MessageDTO<Guid>
+                {
+                    IsSuccess = false,
+                    Description = ex.Message,
+                    Data = Guid.Empty
+                };
+            }
         }
     }
 }

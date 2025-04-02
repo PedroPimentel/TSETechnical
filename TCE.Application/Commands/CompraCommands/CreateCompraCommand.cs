@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using TCE.Application.DTOs;
 
 namespace TCE.Application.Commands.CompraCommands
 {
-    public class CreateCompraCommand : IRequest<Guid>
+    public class CreateCompraCommand : IRequest<MessageDTO<Guid>>
     {
         public Guid ClienteId { get; set; }
         public DateTime DataCompra { get; set; }

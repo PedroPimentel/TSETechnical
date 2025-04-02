@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TCE.Domain.Common;
+﻿using TCE.Domain.Common;
 
 namespace TCE.Domain.Entities
 {
@@ -31,10 +26,9 @@ namespace TCE.Domain.Entities
         public void AdicionarCompra(Compra compra)
         {
             if (compra == null)
-                throw new Exception("Compra não pode ser nula");
+                throw new ArgumentNullException(nameof(compra), "Compra não pode ser nula");
 
             _compras.Add(compra);
         }
     }
-
 }
