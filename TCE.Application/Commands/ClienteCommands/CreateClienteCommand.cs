@@ -1,11 +1,6 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TCE.Application.Commands
+namespace TCE.Application.Commands.ClienteCommands
 {
     public class CreateClienteCommand : IRequest<Guid>
     {

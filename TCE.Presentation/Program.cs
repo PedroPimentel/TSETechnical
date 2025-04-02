@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TCE.Application.Mappings;
-using TCE.Application.Queries;
+using TCE.Application.Queries.ClienteQueries;
 using TCE.Domain.Core.IRepository;
 using TCE.Infrastructure.Data;
 using TCE.Infrastructure.Repositories;

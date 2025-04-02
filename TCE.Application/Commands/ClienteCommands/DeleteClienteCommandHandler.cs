@@ -2,7 +2,7 @@
 using TCE.Domain.Core.IRepository;
 using TCE.Domain.Entities;
 
-namespace TCE.Application.Commands
+namespace TCE.Application.Commands.ClienteCommands
 {
     public class DeleteClienteCommandHandler : IRequestHandler<DeleteClienteCommand>
     {

@@ -1,17 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TCE.Application.Commands;
-using TCE.Application.Queries;
+using TCE.Application.Commands.ClienteCommands;
+using TCE.Application.Queries.ClienteQueries;
 
 namespace TCE.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientesController : ControllerBase
+    public class ClienteController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ClientesController(IMediator mediator)
+        public ClienteController(IMediator mediator)
         {
             _mediator = mediator;
         }

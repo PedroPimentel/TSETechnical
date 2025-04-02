@@ -23,9 +23,8 @@ namespace TCE.Domain.Entities
             ValorDevido = valorDevido;
         }
 
-        public int ClienteId { get; private set; }
-        public Cliente? Cliente { get; private set; }
-
+        public Guid ClienteId { get; private set; }
+        public Cliente Cliente { get; private set; }
         public DateTime DataCompra { get; private set; }
         public string? Descricao { get; private set; }
         public decimal ValorDevido { get; private set; }

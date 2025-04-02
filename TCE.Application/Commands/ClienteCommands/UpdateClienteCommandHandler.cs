@@ -9,7 +9,7 @@ using TCE.Application.DTOs;
 using TCE.Domain.Core.IRepository;
 using TCE.Domain.Entities;
 
-namespace TCE.Application.Commands
+namespace TCE.Application.Commands.ClienteCommands
 {
     public class UpdateClienteCommandHandler : IRequestHandler<UpdateClienteCommand, ClienteDTO>
     {
@@ -25,7 +25,7 @@ namespace TCE.Application.Commands
         public async Task<ClienteDTO> Handle(UpdateClienteCommand request, CancellationToken cancellationToken)
         {
             var cliente = await _unitOfWork.GetRepository<Cliente>().GetByIdAsync(request.Id);
-            
+
             _mapper.Map(request, cliente);
 
             await _unitOfWork.GetRepository<Cliente>().UpdateAsync(cliente);

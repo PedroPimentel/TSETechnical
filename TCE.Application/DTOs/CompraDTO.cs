@@ -2,10 +2,11 @@
 {
     public class CompraDTO
     {
-        public int Id { get; set; }
-        public int ClienteId { get; set; }
+        public Guid Id { get; set; }
+        public Guid ClienteId { get; set; }
         public DateTime DataCompra { get; set; }
         public string Descricao { get; set; }
         public decimal ValorDevido { get; set; }
+        public decimal ValorPago { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TCE.Application.DTOs;
 
-namespace TCE.Application.Queries
+namespace TCE.Application.Queries.ClienteQueries
 {
     public class GetClienteByIdQuery : IRequest<ClienteDTO> // Retorna o DTO do cliente
     {

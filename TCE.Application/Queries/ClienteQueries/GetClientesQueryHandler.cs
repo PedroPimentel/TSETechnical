@@ -9,7 +9,7 @@ using TCE.Application.DTOs;
 using TCE.Domain.Core.IRepository;
 using TCE.Domain.Entities;
 
-namespace TCE.Application.Queries
+namespace TCE.Application.Queries.ClienteQueries
 {
     public class GetClientesQueryHandler : IRequestHandler<GetClientesQuery, IEnumerable<ClienteDTO>>
     {

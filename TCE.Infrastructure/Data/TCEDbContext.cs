@@ -17,5 +17,16 @@ namespace TCE.Infrastructure.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Compra>()
+                .HasOne(c => c.Cliente)
+                .WithMany(c => c.Compras)
+                .HasForeignKey(c => c.ClienteId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

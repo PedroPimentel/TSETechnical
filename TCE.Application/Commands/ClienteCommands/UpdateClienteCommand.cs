@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using TCE.Application.DTOs;
 
-namespace TCE.Application.Commands
+namespace TCE.Application.Commands.ClienteCommands
 {
     public class UpdateClienteCommand : IRequest<ClienteDTO>
     {

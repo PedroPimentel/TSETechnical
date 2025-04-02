@@ -9,7 +9,7 @@ using TCE.Domain.Core.IRepository;
 using TCE.Domain.Entities;
 using TCE.Infrastructure.Repository;
 
-namespace TCE.Application.Commands
+namespace TCE.Application.Commands.ClienteCommands
 {
     public class CreateClienteCommandHandler : IRequestHandler<CreateClienteCommand, Guid>
     {

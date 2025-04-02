@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using System;
-namespace TCE.Application.Commands
+namespace TCE.Application.Commands.ClienteCommands
 {
     public class DeleteClienteCommand : IRequest<Unit>
     {
