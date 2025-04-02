@@ -33,6 +33,7 @@ namespace TCE.Domain.Entities
         public decimal? ValorPago { get; private set; }
 
         public DateTime? DataPagamento { get; private set; }
+        public Guid IdempotencyKey { get; set; }
 
         public void Pagar(decimal valorPago)
         {

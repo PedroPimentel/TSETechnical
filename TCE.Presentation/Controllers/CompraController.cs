@@ -15,9 +15,9 @@ namespace TCE.Presentation.Controllers
         public CompraController(IMediator mediator) { _mediator = mediator; }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
         {
-            var query = new GetComprasQuery();
+            var query = new GetComprasQuery(pageNumber, pageSize);
             var compras = await _mediator.Send(query, cancellationToken);
             return Ok(compras);
         }

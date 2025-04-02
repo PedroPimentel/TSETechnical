@@ -1,8 +1,9 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using TCE.Application.Mappings;
 using TCE.Application.Queries.ClienteQueries;
+using TCE.Application.Validators;
 using TCE.Domain.Core.IRepository;
 using TCE.Infrastructure.Data;
 using TCE.Infrastructure.Repositories;
@@ -21,13 +22,11 @@ builder.Services.AddDbContext<TCEDbContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-//builder.Services.AddMediatR(typeof(Program).Assembly);
-//builder.Services.AddMediatR(typeof(Program).Assembly);
-//builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(typeof(GetClientesQueryHandler).Assembly);
+builder.Services.AddValidatorsFromAssemblyContaining<CompraCommandValidator>();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

@@ -12,7 +12,7 @@ namespace TCE.Domain.Core.IRepository
         Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<TDto>> GetAllProjectedAsync<TDto>();
-        Task<IEnumerable<TDto>> FindProjectedAsync<TDto>(Expression<Func<T, bool>> filter);
+        Task<IEnumerable<TDto>> GetProjectedAsync<TDto>(Expression<Func<T, bool>> filter);
         Task<(IEnumerable<TDto> Data, int TotalCount)> GetPagedProjectedAsync<TDto>(Expression<Func<T, bool>> filter, int pageNumber, int pageSize);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);

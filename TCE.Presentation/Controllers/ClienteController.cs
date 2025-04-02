@@ -18,9 +18,9 @@ namespace TCE.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
         {
-            var query = new GetClientesQuery();
+            var query = new GetClientesQuery(pageNumber, pageSize);
             var clientes = await _mediator.Send(query, cancellationToken);
             return Ok(clientes);
         }

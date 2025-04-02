@@ -11,5 +11,7 @@ namespace TCE.Application.Commands.CompraCommands
         public bool Pago { get; set; }
         public decimal? ValorPago { get; set; }
         public DateTime? DataPagamento { get; set; }
+
+        public Guid IdempotencyKey { get; set; }
     }
 }

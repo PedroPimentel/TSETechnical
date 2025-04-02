@@ -24,8 +24,13 @@ namespace TCE.Application.Queries.ClienteQueries
 
         public async Task<IEnumerable<ClienteDTO>> Handle(GetClientesQuery request, CancellationToken cancellationToken)
         {
-            var clientes = await _clienteRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ClienteDTO>>(clientes);
+            var (clientes, total) = await _clienteRepository.GetPagedProjectedAsync<ClienteDTO>(
+                x => true,
+                request.PageNumber,
+                request.PageSize
+            );
+
+            return clientes;
         }
     }
 }

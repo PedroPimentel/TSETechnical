@@ -30,7 +30,7 @@ namespace TCE.Infrastructure.Repository
             return await _entities.ProjectTo<TDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<IEnumerable<TDto>> FindProjectedAsync<TDto>(Expression<Func<T, bool>> filter)
+        public async Task<IEnumerable<TDto>> GetProjectedAsync<TDto>(Expression<Func<T, bool>> filter)
         {
             return await _entities.Where(filter).ProjectTo<TDto>(_mapper.ConfigurationProvider).ToListAsync();
         }

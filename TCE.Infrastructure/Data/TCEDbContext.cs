@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TCE.Domain.Entities;
+using TCE.Infrastructure.Data.Configurations;
 
 namespace TCE.Infrastructure.Data
 {
@@ -20,13 +21,9 @@ namespace TCE.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ClienteConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CompraConfiguration).Assembly);
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Compra>()
-                .HasOne(c => c.Cliente)
-                .WithMany(c => c.Compras)
-                .HasForeignKey(c => c.ClienteId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TCE.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using TCE.Infrastructure.Data;
 namespace TCE.Infrastructure.Migrations
 {
     [DbContext(typeof(TCEDbContext))]
-    partial class TCEDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402181309_AdicionadaIdempotencyKeyToCompra")]
+    partial class AdicionadaIdempotencyKeyToCompra
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.14");
@@ -82,9 +85,6 @@ namespace TCE.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
-
-                    b.HasIndex("IdempotencyKey")
-                        .IsUnique();
 
                     b.ToTable("Compra");
                 });
