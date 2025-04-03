@@ -19,7 +19,6 @@ namespace TCE.Domain.Entities
 
         public DateTime DataCadastro { get; private set; }
 
-
         private List<Compra> _compras = [];
         public IReadOnlyCollection<Compra> Compras => _compras.AsReadOnly();
 

@@ -5,52 +5,47 @@ namespace TCE.Domain.Entities
     public class Compra : BaseEntity
     {
         private Compra() { }
-        public Compra(string? descricao, decimal valorDevido, Guid idempotencyKey)
+
+        public Compra(string descricao, decimal valorCompra, Guid idempotencyKey)
         {
-            if (string.IsNullOrEmpty(descricao))
-                throw new Exception("Descrição da compra é obrigatória");
+            if (string.IsNullOrWhiteSpace(descricao))
+                throw new ArgumentException("Descrição da compra é obrigatória.", nameof(descricao));
 
-            if (valorDevido <= 0)
-                throw new Exception("Valor devido deve ser maior que zero");
-
-            DataCompra = DateTime.Now;
+            DataCompra = DateTime.UtcNow;
             Descricao = descricao;
-            ValorDevido = valorDevido;
+            ValorCompra = valorCompra;
             IdempotencyKey = idempotencyKey;
         }
 
         public Guid ClienteId { get; private set; }
-        public Cliente Cliente { get; private set; }
+        public Cliente Cliente { get; private set; } = null!;
         public DateTime DataCompra { get; private set; }
-        public string? Descricao { get; private set; }
-        public decimal ValorDevido { get; private set; }
-        public bool Pago { get; set; }
+        public string Descricao { get; private set; }
+        public bool Pago { get; private set; }
         public decimal? ValorPago { get; private set; }
+        public decimal ValorCompra { get; set; }
         public DateTime? DataPagamento { get; private set; }
-        public Guid IdempotencyKey { get; set; }
+        public Guid IdempotencyKey { get; private set; }
+
         public decimal Pagar(decimal valorPago)
         {
             if (valorPago <= 0)
-                throw new Exception("Valor pago deve ser maior que zero");
+                throw new ArgumentException("O valor pago deve ser maior que zero.", nameof(valorPago));
 
             if (Pago)
-                throw new Exception("Compra já foi paga");
+                throw new InvalidOperationException("Compra já foi paga.");
 
-            var troco = 0m;
+            var totalPago = (ValorPago ?? 0) + valorPago;
+            var troco = Math.Max(totalPago - ValorCompra, 0);
 
-            ValorDevido = ValorDevido - valorPago;
-            ValorPago = valorPago;
+            ValorPago = totalPago;
 
-            if (ValorDevido <= 0)
+            if (totalPago >= ValorCompra)
             {
-                ValorDevido = 0m;
-                DataPagamento = DateTime.Now;
                 Pago = true;
-            }
-            else
-            {
-                Pago = false;
-                DataPagamento = null;
+                DataPagamento = DateTime.UtcNow;
+
+                ValorPago = ValorCompra;
             }
 
             return troco;

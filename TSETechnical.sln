@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCE.Infrastructure", "TCE.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCE.Presentation", "TCE.Presentation\TCE.Presentation.csproj", "{245844B0-AD5C-43C2-A6FA-D334A9DDC2B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSETest", "TSETest\TSETest.csproj", "{190A7FAF-65E7-4480-9688-D4DE6E3EC06D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{245844B0-AD5C-43C2-A6FA-D334A9DDC2B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{245844B0-AD5C-43C2-A6FA-D334A9DDC2B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{245844B0-AD5C-43C2-A6FA-D334A9DDC2B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{190A7FAF-65E7-4480-9688-D4DE6E3EC06D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{190A7FAF-65E7-4480-9688-D4DE6E3EC06D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{190A7FAF-65E7-4480-9688-D4DE6E3EC06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{190A7FAF-65E7-4480-9688-D4DE6E3EC06D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

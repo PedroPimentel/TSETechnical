@@ -14,7 +14,7 @@ namespace TCE.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(255);
 
-            builder.Property(c => c.ValorDevido)
+            builder.Property(c => c.ValorCompra)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 

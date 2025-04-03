@@ -2,12 +2,13 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using TCE.Domain.Common;
 using TCE.Domain.Core.IRepository;
 using TCE.Infrastructure.Data;
 
 namespace TCE.Infrastructure.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly TCEDbContext _context;
         private readonly DbSet<T> _entities;
@@ -37,7 +38,7 @@ namespace TCE.Infrastructure.Repository
 
         public async Task<(IEnumerable<TDto> Data, int TotalCount)> GetPagedProjectedAsync<TDto>(Expression<Func<T, bool>> filter, int pageNumber, int pageSize)
         {
-            var query = _entities.Where(filter);
+            var query = _entities.Where(filter).AsNoTracking();
             var totalCount = await query.CountAsync();
             var data = await query
                 .Skip((pageNumber - 1) * pageSize)
@@ -70,6 +71,21 @@ namespace TCE.Infrastructure.Repository
             {
                 _entities.Remove(entity);
             }
+        }
+
+        public void Attach(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+        }
+
+        public async Task<T> GetByIdAsync(Guid id, Func<IQueryable<T>, IQueryable<T>> include = null)
+        {
+            IQueryable<T> query = _entities.AsQueryable();
+
+            if (include != null)
+                query = include(query);
+
+            return await query.AsTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
     }

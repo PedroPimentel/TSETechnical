@@ -76,9 +76,6 @@ namespace TCE.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
-                    b.Property<decimal>("ValorDevido")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal?>("ValorPago")
                         .HasColumnType("decimal(18,2)");
 

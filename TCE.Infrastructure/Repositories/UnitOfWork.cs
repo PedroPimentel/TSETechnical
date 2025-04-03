@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using TCE.Domain.Common;
 using TCE.Domain.Core.IRepository;
 using TCE.Infrastructure.Data;
 using TCE.Infrastructure.Repository;
@@ -23,7 +24,7 @@ namespace TCE.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public IRepository<T> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>() where T : BaseEntity
         {
             if (_repositories.ContainsKey(typeof(T)))
             {

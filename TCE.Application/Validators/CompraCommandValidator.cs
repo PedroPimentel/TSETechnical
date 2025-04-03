@@ -7,7 +7,7 @@ namespace TCE.Application.Validators
     {
         public CompraCommandValidator()
         {
-            RuleFor(c => c.ValorDevido)
+            RuleFor(c => c.ValorCompra)
                 .GreaterThan(0).WithMessage("O valor da compra deve ser maior que zero.");
 
             RuleFor(c => c.DataCompra)

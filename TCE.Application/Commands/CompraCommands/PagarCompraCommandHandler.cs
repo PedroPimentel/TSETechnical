@@ -28,14 +28,16 @@ public class PagarCompraCommandHandler : IRequestHandler<PagarCompraCommand, Mes
 
         try
         {
-            compra.Pagar(request.ValorPago);
+            var troco = compra.Pagar(request.ValorPago);
             await _unitOfWork.GetRepository<Compra>().UpdateAsync(compra);
             await _unitOfWork.SaveChangesAsync();
+
+            var mensagem = troco > 0 ? $"Compra paga com sucesso. Troco: {troco:C}" : "Pagamento adicionado com sucesso.";
 
             return new MessageDTO<Guid>
             {
                 IsSuccess = true,
-                Description = "Compra paga com sucesso",
+                Description = mensagem,
                 Data = compra.Id
             };
         }

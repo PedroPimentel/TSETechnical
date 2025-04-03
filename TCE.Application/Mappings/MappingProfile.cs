@@ -16,17 +16,20 @@ namespace TCE.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Compra, CompraDTO>();
+            CreateMap<Cliente, ClienteDTO>()
+                .ForMember(dest => dest.Compras, opt => opt.MapFrom(src => src.Compras));
+            CreateMap<Compra, Compra>();
             CreateMap<Cliente, ClienteDTO>();
             CreateMap<UpdateClienteCommand, Cliente>().ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<UpdateCompraCommand, Compra>().ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<CreateCompraCommand, Compra>();
             CreateMap<CreateClienteCommand, Cliente>();
+            CreateMap<Compra, CompraDTO>();
             CreateMap<Compra, Guid>().ConvertUsing(src => src.Id);
             CreateMap<Compra, MessageDTO<Guid>>()
-            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Id)) 
-            .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(_ => true))
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(_ => "Compra realizada com sucesso"));
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Id)) 
+                .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(_ => true))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(_ => "Compra realizada com sucesso"));
         }
     }
 }

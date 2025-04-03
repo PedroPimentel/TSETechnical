@@ -35,7 +35,6 @@ namespace TCE.Infrastructure.Migrations
                     ClienteId1 = table.Column<Guid>(type: "TEXT", nullable: true),
                     DataCompra = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Descricao = table.Column<string>(type: "TEXT", nullable: true),
-                    ValorDevido = table.Column<decimal>(type: "TEXT", nullable: false),
                     Pago = table.Column<bool>(type: "INTEGER", nullable: false),
                     ValorPago = table.Column<decimal>(type: "TEXT", nullable: true),
                     DataPagamento = table.Column<DateTime>(type: "TEXT", nullable: true)

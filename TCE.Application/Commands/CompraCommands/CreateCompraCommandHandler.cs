@@ -47,6 +47,7 @@ namespace TCE.Application.Commands.CompraCommands
             }
 
             var cliente = await _unitOfWork.GetRepository<Cliente>().GetByIdAsync(request.ClienteId);
+
             if (cliente is null)
                 return new MessageDTO<Guid>
                 {
@@ -55,17 +56,18 @@ namespace TCE.Application.Commands.CompraCommands
                     Data = Guid.Empty
                 };
 
+            _unitOfWork.GetRepository<Cliente>().Attach(cliente);
+
             try
             {
                 var compra = _mapper.Map<Compra>(request);
-
                 cliente.AdicionarCompra(compra);
                 await _unitOfWork.GetRepository<Compra>().AddAsync(compra);
                 await _unitOfWork.SaveChangesAsync();
 
                 return _mapper.Map<MessageDTO<Guid>>(compra);
             }
-            catch (Exception ex) // Captura as exceções do TCE.Domain
+            catch (Exception ex)
             {
                 return new MessageDTO<Guid>
                 {

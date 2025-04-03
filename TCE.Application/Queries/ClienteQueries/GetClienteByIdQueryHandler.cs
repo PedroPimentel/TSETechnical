@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TCE.Application.DTOs;
 using TCE.Domain.Core.IRepository;
 using TCE.Domain.Entities;
@@ -13,23 +9,37 @@ namespace TCE.Application.Queries.ClienteQueries
 {
     public class GetClienteByIdQueryHandler : IRequestHandler<GetClienteByIdQuery, ClienteDTO>
     {
-        private readonly IRepository<Cliente> _clienteRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetClienteByIdQueryHandler(IRepository<Cliente> clienteRepository, IMapper mapper)
+        public GetClienteByIdQueryHandler(IRepository<Cliente> clienteRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _clienteRepository = clienteRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<ClienteDTO> Handle(GetClienteByIdQuery request, CancellationToken cancellationToken)
         {
-            var cliente = await _clienteRepository.GetByIdAsync(request.Id);
+            try
+            {
+                var cliente = await _unitOfWork.GetRepository<Cliente>()
+                    .GetByIdAsync(request.Id, query => query.Include(c => c.Compras));
 
-            if (cliente == null) return null;
+                if (cliente is null) return null;
 
-            // Mapeia a entidade Cliente para o ClienteDTO
-            return _mapper.Map<ClienteDTO>(cliente);
+                var compras = await _unitOfWork.GetRepository<Compra>()
+                    .GetProjectedAsync<Compra>(x => x.ClienteId == request.Id);
+
+                cliente.Compras.ToList().AddRange(compras);
+
+                return _mapper.Map<ClienteDTO>(cliente);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
     }
 
